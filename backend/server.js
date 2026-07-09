@@ -729,7 +729,7 @@ app.post('/api/admin/upload', upload.single('image'), (req, res) => {
     })
   }
 
-  const imageUrl = `http://localhost:5000/uploads/${req.file.filename}`
+  const imageUrl = `https://engineering-portfolio.up.railway.app/uploads/${req.file.filename}`
 
   res.json({
     message: 'Image uploaded successfully',
