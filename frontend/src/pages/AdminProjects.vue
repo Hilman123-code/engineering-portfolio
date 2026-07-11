@@ -12,60 +12,60 @@
 
     <h1 class="text-4xl font-bold mb-8">Manage Projects</h1>
 
-    <div class="bg-white rounded-2xl shadow p-6 mb-8">
+    <div class="bg-white rounded-2xl shadow p-6 mb-8 min-w-0">
       <h2 class="text-2xl font-bold mb-5">
         {{ isEditing ? 'Edit Project' : 'Add New Project' }}
       </h2>
 
       <form
         @submit.prevent="isEditing ? updateProject() : addProject()"
-        class="grid gap-6"
+        class="grid gap-6 min-w-0"
       >
         <!-- Basic Information -->
         <div>
           <h3 class="text-xl font-bold mb-4">Basic Information</h3>
 
-          <div class="grid gap-4">
+          <div class="grid gap-4 min-w-0">
             <input
               v-model="form.title"
               type="text"
               placeholder="Project Title"
-              class="border rounded-xl px-4 py-3"
+              class="border rounded-xl px-4 py-3 w-full"
             />
 
             <textarea
               v-model="form.description"
               rows="4"
               placeholder="Short Project Description"
-              class="border rounded-xl px-4 py-3"
+              class="border rounded-xl px-4 py-3 w-full"
             ></textarea>
 
             <input
               v-model="form.tech"
               type="text"
               placeholder="Tech Example: Vue, Node.js, MySQL"
-              class="border rounded-xl px-4 py-3"
+              class="border rounded-xl px-4 py-3 w-full"
             />
 
             <input
               v-model="form.status"
               type="text"
               placeholder="Status example: Completed / In Progress"
-              class="border rounded-xl px-4 py-3"
+              class="border rounded-xl px-4 py-3 w-full"
             />
 
             <input
               v-model="form.duration"
               type="text"
               placeholder="Duration example: 3 Months"
-              class="border rounded-xl px-4 py-3"
+              class="border rounded-xl px-4 py-3 w-full"
             />
 
             <input
               v-model="form.role"
               type="text"
               placeholder="Role example: Full Stack Developer"
-              class="border rounded-xl px-4 py-3"
+              class="border rounded-xl px-4 py-3 w-full"
             />
           </div>
         </div>
@@ -74,19 +74,19 @@
         <div>
           <h3 class="text-xl font-bold mb-4">Media & Links</h3>
 
-          <div class="grid gap-4">
+          <div class="grid gap-4 min-w-0">
             <input
               v-model="form.image"
               type="text"
               placeholder="Image URL example: /images/project1.jpg"
-              class="border rounded-xl px-4 py-3"
+              class="border rounded-xl px-4 py-3 w-full"
             />
 
             <input
               type="file"
               accept="image/*"
               @change="uploadImage"
-              class="border rounded-xl px-4 py-3"
+              class="border rounded-xl px-4 py-3 w-full"
             />
 
             <div v-if="form.image" class="flex justify-center">
@@ -100,14 +100,14 @@
               v-model="form.github"
               type="text"
               placeholder="GitHub URL"
-              class="border rounded-xl px-4 py-3"
+              class="border rounded-xl px-4 py-3 w-full"
             />
 
             <input
               v-model="form.demo"
               type="text"
               placeholder="Live Demo URL"
-              class="border rounded-xl px-4 py-3"
+              class="border rounded-xl px-4 py-3 w-full"
             />
           </div>
         </div>
@@ -116,54 +116,54 @@
         <div>
           <h3 class="text-xl font-bold mb-4">Project Case Study</h3>
 
-          <div class="grid gap-4">
+          <div class="grid gap-4 min-w-0">
             <textarea
               v-model="form.overview"
               rows="4"
               placeholder="Project Overview"
-              class="border rounded-xl px-4 py-3"
+              class="border rounded-xl px-4 py-3 w-full"
             ></textarea>
 
             <textarea
               v-model="form.problem"
               rows="4"
               placeholder="Problem"
-              class="border rounded-xl px-4 py-3"
+              class="border rounded-xl px-4 py-3 w-full"
             ></textarea>
 
             <textarea
               v-model="form.solution"
               rows="4"
               placeholder="Solution"
-              class="border rounded-xl px-4 py-3"
+              class="border rounded-xl px-4 py-3 w-full"
             ></textarea>
 
             <textarea
               v-model="form.architecture"
               rows="4"
               placeholder="Architecture example: Camera → Python → API → MySQL → Dashboard"
-              class="border rounded-xl px-4 py-3"
+              class="border rounded-xl px-4 py-3 w-full"
             ></textarea>
 
             <textarea
               v-model="form.challenges"
               rows="4"
               placeholder="Challenges"
-              class="border rounded-xl px-4 py-3"
+              class="border rounded-xl px-4 py-3 w-full"
             ></textarea>
 
             <textarea
               v-model="form.result"
               rows="4"
               placeholder="Results / Outcome"
-              class="border rounded-xl px-4 py-3"
+              class="border rounded-xl px-4 py-3 w-full"
             ></textarea>
 
             <textarea
               v-model="form.lessons"
               rows="4"
               placeholder="Lessons Learned"
-              class="border rounded-xl px-4 py-3"
+              class="border rounded-xl px-4 py-3 w-full"
             ></textarea>
           </div>
         </div>
@@ -172,19 +172,19 @@
         <div v-if="isEditing">
           <h3 class="text-xl font-bold mb-4">Project Gallery</h3>
 
-          <div class="grid gap-4">
+          <div class="grid gap-4 min-w-0">
             <input
               type="file"
               accept="image/*"
               @change="handleGalleryFile"
-              class="border rounded-xl px-4 py-3"
+              class="border rounded-xl px-4 py-3 w-full"
             />
 
             <input
               v-model="galleryCaption"
               type="text"
               placeholder="Image caption"
-              class="border rounded-xl px-4 py-3"
+              class="border rounded-xl px-4 py-3 w-full"
             />
 
             <button
