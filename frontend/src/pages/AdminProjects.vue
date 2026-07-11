@@ -269,7 +269,8 @@
       Loading projects...
     </p>
 
-    <div class="bg-white rounded-2xl shadow overflow-x-auto">
+    <!-- Desktop table (md and up) -->
+    <div class="hidden md:block bg-white rounded-2xl shadow overflow-x-auto">
       <table class="w-full text-left">
         <thead class="bg-slate-900 text-white">
           <tr>
@@ -380,6 +381,106 @@
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- Mobile card list (below md) -->
+    <div class="md:hidden grid gap-4">
+      <p
+        v-if="filteredProjects.length === 0"
+        class="bg-white rounded-2xl shadow p-6 text-center text-gray-500"
+      >
+        No projects found.
+      </p>
+
+      <div
+        v-for="project in filteredProjects"
+        :key="project.id"
+        class="bg-white rounded-2xl shadow p-4"
+      >
+        <div class="flex gap-3 mb-3">
+          <img
+            v-if="project.image"
+            :src="project.image"
+            class="w-20 h-14 object-cover rounded-lg shrink-0"
+          />
+          <div
+            v-else
+            class="w-20 h-14 shrink-0 rounded-lg bg-gray-100 flex items-center justify-center text-xs text-gray-400"
+          >
+            No image
+          </div>
+
+          <div class="min-w-0">
+            <h3 class="font-semibold break-words">
+              {{ project.title }}
+            </h3>
+
+            <p class="text-sm text-gray-500 break-words">
+              {{ project.role || '-' }}
+            </p>
+          </div>
+        </div>
+
+        <span
+          :class="getStatusClass(project.status)"
+          class="inline-block px-3 py-1 rounded-full text-sm mb-3"
+        >
+          {{ project.status || '-' }}
+        </span>
+
+        <div class="flex flex-wrap gap-2 mb-3">
+          <span
+            v-for="tech in project.tech"
+            :key="tech"
+            class="inline-block bg-blue-100 text-blue-700 text-sm px-3 py-1 rounded-full"
+          >
+            {{ tech }}
+          </span>
+        </div>
+
+        <div class="flex flex-wrap gap-3 mb-4 text-sm">
+          <a
+            v-if="project.github"
+            :href="project.github"
+            target="_blank"
+            class="text-blue-600 font-semibold"
+          >
+            GitHub
+          </a>
+
+          <a
+            v-if="project.demo"
+            :href="project.demo"
+            target="_blank"
+            class="text-green-600 font-semibold"
+          >
+            Demo
+          </a>
+
+          <span
+            v-if="!project.github && !project.demo"
+            class="text-gray-400"
+          >
+            No links
+          </span>
+        </div>
+
+        <div class="flex gap-2">
+          <button
+            @click="startEdit(project)"
+            class="flex-1 bg-yellow-500 text-white px-4 py-2 rounded-xl hover:bg-yellow-600"
+          >
+            Edit
+          </button>
+
+          <button
+            @click="openDeleteModal(project.id)"
+            class="flex-1 bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
     </div>
   </AdminLayout>
 </template>
