@@ -6,21 +6,21 @@
       <h1 class="text-4xl font-bold">Edit Profile</h1>
     </div>
 
-    <div class="bg-white rounded-2xl shadow p-8">
-      <form @submit.prevent="updateProfile" class="grid gap-5">
-        <input v-model="profile.full_name" placeholder="Full Name" class="border rounded-xl px-4 py-3" />
+    <div class="bg-white rounded-2xl shadow p-8 min-w-0">
+      <form @submit.prevent="updateProfile" class="grid gap-5 min-w-0">
+        <input v-model="profile.full_name" placeholder="Full Name" class="border rounded-xl px-4 py-3 w-full" />
 
-        <input v-model="profile.job_title" placeholder="Job Title" class="border rounded-xl px-4 py-3" />
+        <input v-model="profile.job_title" placeholder="Job Title" class="border rounded-xl px-4 py-3 w-full" />
 
-        <textarea v-model="profile.bio" rows="5" placeholder="Bio" class="border rounded-xl px-4 py-3"></textarea>
+        <textarea v-model="profile.bio" rows="5" placeholder="Bio" class="border rounded-xl px-4 py-3 w-full"></textarea>
 
-        <input v-model="profile.profile_image" placeholder="Profile Image URL" class="border rounded-xl px-4 py-3" />
+        <input v-model="profile.profile_image" placeholder="Profile Image URL" class="border rounded-xl px-4 py-3 w-full" />
 
         <input
           type="file"
           accept="image/*"
           @change="uploadProfileImage"
-          class="border rounded-xl px-4 py-3"
+          class="border rounded-xl px-4 py-3 w-full"
         />
 
         <div v-if="profile.profile_image" class="flex justify-center">
@@ -30,19 +30,19 @@
           />
         </div>
 
-        <input v-model="profile.linkedin" placeholder="LinkedIn URL" class="border rounded-xl px-4 py-3" />
+        <input v-model="profile.linkedin" placeholder="LinkedIn URL" class="border rounded-xl px-4 py-3 w-full" />
 
-        <input v-model="profile.github" placeholder="GitHub URL" class="border rounded-xl px-4 py-3" />
+        <input v-model="profile.github" placeholder="GitHub URL" class="border rounded-xl px-4 py-3 w-full" />
 
-        <input v-model="profile.email" placeholder="Email" class="border rounded-xl px-4 py-3" />
+        <input v-model="profile.email" placeholder="Email" class="border rounded-xl px-4 py-3 w-full" />
 
-        <input v-model="profile.phone" placeholder="Phone" class="border rounded-xl px-4 py-3" />
+        <input v-model="profile.phone" placeholder="Phone" class="border rounded-xl px-4 py-3 w-full" />
 
-        <input v-model="profile.location" placeholder="Location" class="border rounded-xl px-4 py-3" />
+        <input v-model="profile.location" placeholder="Location" class="border rounded-xl px-4 py-3 w-full" />
 
-        <input v-model="profile.resume_url" placeholder="Resume URL example: /resume/resume.pdf" class="border rounded-xl px-4 py-3" />
+        <input v-model="profile.resume_url" placeholder="Resume URL example: /resume/resume.pdf" class="border rounded-xl px-4 py-3 w-full" />
 
-        <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700">
+        <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700 w-full">
           Save Profile
         </button>
       </form>
