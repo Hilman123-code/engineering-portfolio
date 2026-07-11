@@ -41,6 +41,32 @@ const transporter = nodemailer.createTransport({
   }
 })
 
+// ===== AUTH MIDDLEWARE =====
+// Checks for a valid JWT in the Authorization header before allowing
+// access to protected admin routes. Blocks any request without a
+// valid token with 401/403.
+function verifyToken(req, res, next) {
+  const authHeader = req.headers['authorization']
+  const token = authHeader && authHeader.split(' ')[1] // expects "Bearer <token>"
+
+  if (!token) {
+    return res.status(401).json({
+      message: 'Access denied. No token provided.'
+    })
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.status(403).json({
+        message: 'Invalid or expired token.'
+      })
+    }
+
+    req.admin = decoded
+    next()
+  })
+}
+
 app.get('/', (req, res) => {
   res.send('Engineering Portfolio API is running')
 })
@@ -120,7 +146,7 @@ app.post('/api/admin/login', (req, res) => {
   })
 })
 
-app.post('/api/admin/projects', (req, res) => {
+app.post('/api/admin/projects', verifyToken, (req, res) => {
   const {
     title,
     description,
@@ -190,7 +216,7 @@ app.post('/api/admin/projects', (req, res) => {
   )
 })
 
-app.get('/api/admin/contacts', (req, res) => {
+app.get('/api/admin/contacts', verifyToken, (req, res) => {
   const sql = 'SELECT * FROM contacts ORDER BY id DESC'
 
   db.query(sql, (err, results) => {
@@ -205,7 +231,7 @@ app.get('/api/admin/contacts', (req, res) => {
   })
 })
 
-app.delete('/api/admin/projects/:id', (req, res) => {
+app.delete('/api/admin/projects/:id', verifyToken, (req, res) => {
   const { id } = req.params
 
   const sql = 'DELETE FROM projects WHERE id = ?'
@@ -224,7 +250,7 @@ app.delete('/api/admin/projects/:id', (req, res) => {
   })
 })
 
-app.put('/api/admin/projects/:id', (req, res) => {
+app.put('/api/admin/projects/:id', verifyToken, (req, res) => {
   const { id } = req.params
 
   const {
@@ -310,7 +336,7 @@ app.put('/api/admin/projects/:id', (req, res) => {
   )
 })
 
-app.delete('/api/admin/contacts/:id', (req, res) => {
+app.delete('/api/admin/contacts/:id', verifyToken, (req, res) => {
   const { id } = req.params
 
   const sql = 'DELETE FROM contacts WHERE id = ?'
@@ -374,7 +400,7 @@ app.get('/api/profile', (req, res) => {
   })
 })
 
-app.put('/api/admin/profile', (req, res) => {
+app.put('/api/admin/profile', verifyToken, (req, res) => {
   const {
     full_name,
     job_title,
@@ -433,7 +459,7 @@ app.put('/api/admin/profile', (req, res) => {
   )
 })
 
-app.get('/api/admin/stats', (req, res) => {
+app.get('/api/admin/stats', verifyToken, (req, res) => {
   const sql = `
   SELECT
     (SELECT COUNT(*) FROM projects) AS total_projects,
@@ -470,7 +496,7 @@ app.get('/api/experiences', (req, res) => {
   })
 })
 
-app.post('/api/admin/experiences', (req, res) => {
+app.post('/api/admin/experiences', verifyToken, (req, res) => {
   const { title, company, year, description } = req.body
 
   if (!title || !description) {
@@ -498,7 +524,7 @@ app.post('/api/admin/experiences', (req, res) => {
   })
 })
 
-app.put('/api/admin/experiences/:id', (req, res) => {
+app.put('/api/admin/experiences/:id', verifyToken, (req, res) => {
   const { id } = req.params
   const { title, company, year, description } = req.body
 
@@ -522,7 +548,7 @@ app.put('/api/admin/experiences/:id', (req, res) => {
   })
 })
 
-app.delete('/api/admin/experiences/:id', (req, res) => {
+app.delete('/api/admin/experiences/:id', verifyToken, (req, res) => {
   const { id } = req.params
 
   const sql = 'DELETE FROM experiences WHERE id = ?'
@@ -556,7 +582,7 @@ app.get('/api/certificates', (req, res) => {
   })
 })
 
-app.post('/api/admin/certificates', (req, res) => {
+app.post('/api/admin/certificates', verifyToken, (req, res) => {
   const { title, issuer, year, description, image } = req.body
 
   if (!title || !description) {
@@ -584,7 +610,7 @@ app.post('/api/admin/certificates', (req, res) => {
   })
 })
 
-app.put('/api/admin/certificates/:id', (req, res) => {
+app.put('/api/admin/certificates/:id', verifyToken, (req, res) => {
   const { id } = req.params
   const { title, issuer, year, description, image } = req.body
 
@@ -608,7 +634,7 @@ app.put('/api/admin/certificates/:id', (req, res) => {
   })
 })
 
-app.delete('/api/admin/certificates/:id', (req, res) => {
+app.delete('/api/admin/certificates/:id', verifyToken, (req, res) => {
   const { id } = req.params
 
   const sql = 'DELETE FROM certificates WHERE id = ?'
@@ -642,7 +668,7 @@ app.get('/api/skills', (req, res) => {
   })
 })
 
-app.post('/api/admin/skills', (req, res) => {
+app.post('/api/admin/skills', verifyToken, (req, res) => {
   const { icon, title, description } = req.body
 
   if (!title || !description) {
@@ -667,7 +693,7 @@ app.post('/api/admin/skills', (req, res) => {
   })
 })
 
-app.put('/api/admin/skills/:id', (req, res) => {
+app.put('/api/admin/skills/:id', verifyToken, (req, res) => {
   const { id } = req.params
   const { icon, title, description } = req.body
 
@@ -691,7 +717,7 @@ app.put('/api/admin/skills/:id', (req, res) => {
   })
 })
 
-app.delete('/api/admin/skills/:id', (req, res) => {
+app.delete('/api/admin/skills/:id', verifyToken, (req, res) => {
   const { id } = req.params
 
   const sql = 'DELETE FROM skills WHERE id = ?'
@@ -722,7 +748,7 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage })
 
-app.post('/api/admin/upload', upload.single('image'), (req, res) => {
+app.post('/api/admin/upload', verifyToken, upload.single('image'), (req, res) => {
   if (!req.file) {
     return res.status(400).json({
       message: 'No file uploaded'
@@ -754,7 +780,7 @@ app.get('/api/projects/:id/images', (req, res) => {
   })
 })
 
-app.post('/api/admin/projects/:id/images', (req, res) => {
+app.post('/api/admin/projects/:id/images', verifyToken, (req, res) => {
   const { id } = req.params
   const { image_url, caption } = req.body
 
@@ -783,7 +809,7 @@ app.post('/api/admin/projects/:id/images', (req, res) => {
   })
 })
 
-app.delete('/api/admin/project-images/:id', (req, res) => {
+app.delete('/api/admin/project-images/:id', verifyToken, (req, res) => {
   const { id } = req.params
 
   const sql = 'DELETE FROM project_images WHERE id = ?'
