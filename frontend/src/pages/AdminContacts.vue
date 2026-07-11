@@ -24,7 +24,8 @@
       Loading contacts...
     </p>
 
-    <div class="bg-white rounded-2xl shadow overflow-x-auto">
+    <!-- Desktop table (md and up) -->
+    <div class="hidden md:block bg-white rounded-2xl shadow overflow-x-auto">
       <table class="w-full text-left">
         <thead class="bg-slate-900 text-white">
           <tr>
@@ -57,6 +58,47 @@
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- Mobile card list (below md) -->
+    <div class="md:hidden grid gap-4">
+      <p
+        v-if="filteredContacts.length === 0"
+        class="bg-white rounded-2xl shadow p-6 text-center text-gray-500"
+      >
+        No contact messages found.
+      </p>
+
+      <div
+        v-for="contact in filteredContacts"
+        :key="contact.id"
+        class="bg-white rounded-2xl shadow p-4 min-w-0"
+      >
+        <div class="flex justify-between items-start gap-3 mb-2">
+          <h3 class="font-semibold break-words min-w-0">
+            {{ contact.name }}
+          </h3>
+
+          <span class="text-xs text-gray-400 shrink-0">
+            {{ formatDate(contact.created_at) }}
+          </span>
+        </div>
+
+        <p class="text-sm text-blue-600 break-words mb-3">
+          {{ contact.email }}
+        </p>
+
+        <p class="text-sm text-gray-700 break-words mb-4">
+          {{ contact.message }}
+        </p>
+
+        <button
+          @click="openDeleteModal(contact.id)"
+          class="w-full bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700"
+        >
+          Delete
+        </button>
+      </div>
     </div>
   </AdminLayout>
 </template>
