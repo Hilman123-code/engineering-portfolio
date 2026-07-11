@@ -1,5 +1,5 @@
 <template>
-  <section class="aurora-bg grid-bg min-h-screen text-white flex items-center pt-32 pb-20">
+  <section class="hero-theme-scope aurora-bg grid-bg min-h-screen text-white flex items-center pt-32 pb-20">
     <div class="content-layer max-w-7xl mx-auto px-6 grid md:grid-cols-2 gap-14 items-center">
       <div>
         <p class="text-blue-400 font-semibold mb-4">

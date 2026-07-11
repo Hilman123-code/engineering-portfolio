@@ -8,13 +8,25 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { ref, onMounted } from 'vue'
 
-const isDark = ref(false)
+// Note: this currently only re-themes the Navbar and Hero section.
+// Other sections intentionally stay on the default dark theme.
+const isDark = ref(true)
+
+const applyTheme = () => {
+  document.body.classList.toggle('light-mode', !isDark.value)
+}
 
 const toggleTheme = () => {
   isDark.value = !isDark.value
-
-  document.body.classList.toggle('dark-mode', isDark.value)
+  applyTheme()
+  localStorage.setItem('theme', isDark.value ? 'dark' : 'light')
 }
+
+onMounted(() => {
+  const saved = localStorage.getItem('theme')
+  isDark.value = saved !== 'light'
+  applyTheme()
+})
 </script>

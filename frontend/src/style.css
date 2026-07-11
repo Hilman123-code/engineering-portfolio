@@ -156,3 +156,63 @@ body {
     transform: translateX(100%);
   }
 }
+
+/* ============================================
+   Scoped Light Mode — Navbar + Hero ONLY
+   Toggled by ThemeToggle.vue via body.light-mode
+   Every other section stays on the default dark theme.
+   ============================================ */
+
+body.light-mode .hero-theme-scope {
+  background: #f8fafc;
+  color: #0f172a;
+}
+
+body.light-mode .hero-theme-scope .text-white {
+  color: #0f172a;
+}
+
+body.light-mode .hero-theme-scope .text-slate-300 {
+  color: #475569;
+}
+
+body.light-mode .hero-theme-scope .text-blue-400 {
+  color: #2563eb;
+}
+
+body.light-mode .hero-theme-scope .glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(15, 23, 42, 0.12);
+}
+
+body.light-mode .hero-theme-scope .bg-slate-800 {
+  background: #e2e8f0;
+}
+
+body.light-mode .hero-theme-scope .aurora-bg::before,
+body.light-mode .hero-theme-scope::before {
+  opacity: 0.3;
+}
+
+body.light-mode .hero-theme-scope.grid-bg {
+  background-image:
+    linear-gradient(rgba(15, 23, 42, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(15, 23, 42, 0.06) 1px, transparent 1px);
+}
+
+body.light-mode .nav-theme-scope {
+  color: #0f172a;
+}
+
+body.light-mode .nav-theme-scope .text-white {
+  color: #0f172a;
+}
+
+body.light-mode .nav-theme-scope .text-slate-300 {
+  color: #475569;
+}
+
+body.light-mode .nav-theme-scope .glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  border-color: rgba(15, 23, 42, 0.12);
+}

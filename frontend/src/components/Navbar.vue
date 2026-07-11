@@ -1,5 +1,5 @@
 <template>
-  <nav class="fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-6xl">
+  <nav class="nav-theme-scope fixed top-4 left-1/2 -translate-x-1/2 z-50 w-[92%] max-w-6xl">
     <div class="glass-card rounded-2xl px-6 py-4 flex justify-between items-center text-white">
       <a href="#" class="font-bold text-xl">
         {{ profile.full_name || 'Portfolio' }}
