@@ -50,7 +50,6 @@
   </div>
 
   <Footer />
-  <ThemeToggle />
 </template>
 
 <script setup>
@@ -66,7 +65,6 @@ import Contact from '../components/Contact.vue'
 import Footer from '../components/Footer.vue'
 import Timeline from '../components/Timeline.vue'
 import Certificates from '../components/Certificates.vue'
-import ThemeToggle from '../components/ThemeToggle.vue'
 import SocialLinks from '../components/SocialLinks.vue'
 import Stats from '../components/Stats.vue'
 import RecruiterSection from '../components/RecruiterSection.vue'
