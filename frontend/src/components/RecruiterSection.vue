@@ -27,7 +27,7 @@
 
           <a
             v-if="profile.linkedin"
-            :href="profile.linkedin"
+            :href="normalizeUrl(profile.linkedin)"
             target="_blank"
             class="glass-card px-7 py-4 rounded-2xl font-semibold hover:bg-white hover:text-slate-900 transition"
           >
@@ -56,6 +56,13 @@ const profile = reactive({
   linkedin: '',
   email: ''
 })
+
+// Ensures external links always have a protocol, so hrefs like
+// "www.linkedin.com/..." don't get treated as an internal route.
+const normalizeUrl = (url) => {
+  if (!url) return '#'
+  return /^https?:\/\//i.test(url) ? url : `https://${url}`
+}
 
 onMounted(async () => {
   const response = await api.get('/api/profile')

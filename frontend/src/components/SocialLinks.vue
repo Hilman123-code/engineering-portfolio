@@ -9,7 +9,7 @@
       <div class="flex flex-wrap justify-center gap-4">
         <a
           v-if="profile.github"
-          :href="profile.github"
+          :href="normalizeUrl(profile.github)"
           target="_blank"
           class="glass-card px-6 py-3 rounded-xl hover:bg-blue-600 transition"
         >
@@ -18,7 +18,7 @@
 
         <a
           v-if="profile.linkedin"
-          :href="profile.linkedin"
+          :href="normalizeUrl(profile.linkedin)"
           target="_blank"
           class="glass-card px-6 py-3 rounded-xl hover:bg-blue-600 transition"
         >
@@ -46,6 +46,13 @@ const profile = reactive({
   linkedin: '',
   email: ''
 })
+
+// Ensures external links always have a protocol, so hrefs like
+// "www.linkedin.com/..." don't get treated as an internal route.
+const normalizeUrl = (url) => {
+  if (!url) return '#'
+  return /^https?:\/\//i.test(url) ? url : `https://${url}`
+}
 
 onMounted(async () => {
   const response = await api.get('/api/profile')
