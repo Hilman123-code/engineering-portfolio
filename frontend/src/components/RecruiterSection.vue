@@ -25,6 +25,14 @@
             Download Resume
           </a>
 
+          <button
+            @click="isPreviewOpen = true"
+            type="button"
+            class="glass-card px-7 py-4 rounded-2xl font-semibold hover:bg-white hover:text-slate-900 transition"
+          >
+            Preview Resume
+          </button>
+
           <a
             v-if="profile.linkedin"
             :href="normalizeUrl(profile.linkedin)"
@@ -44,25 +52,27 @@
         </div>
       </div>
     </div>
+
+    <ResumeModal
+      v-model="isPreviewOpen"
+      :resume-url="profile.resume_url || '/resume/resume.pdf'"
+    />
   </section>
 </template>
 
 <script setup>
-import { reactive, onMounted } from 'vue'
+import { reactive, ref, onMounted } from 'vue'
 import api from '../services/api'
+import { normalizeUrl } from '../utils/helpers'
+import ResumeModal from './ResumeModal.vue'
+
+const isPreviewOpen = ref(false)
 
 const profile = reactive({
   resume_url: '',
   linkedin: '',
   email: ''
 })
-
-// Ensures external links always have a protocol, so hrefs like
-// "www.linkedin.com/..." don't get treated as an internal route.
-const normalizeUrl = (url) => {
-  if (!url) return '#'
-  return /^https?:\/\//i.test(url) ? url : `https://${url}`
-}
 
 onMounted(async () => {
   const response = await api.get('/api/profile')

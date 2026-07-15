@@ -35,6 +35,14 @@
           >
             Download CV
           </a>
+
+          <button
+            @click="isPreviewOpen = true"
+            type="button"
+            class="glass-card px-7 py-4 rounded-2xl font-semibold hover:bg-white hover:text-slate-900 transition"
+          >
+            Preview CV
+          </button>
         </div>
 
         <div class="flex flex-wrap gap-3 mt-8 text-sm text-slate-300">
@@ -60,6 +68,11 @@
         </div>
       </div>
     </div>
+
+    <ResumeModal
+      v-model="isPreviewOpen"
+      :resume-url="profile.resume_url || '/resume/resume.pdf'"
+    />
   </section>
 </template>
 
@@ -67,8 +80,10 @@
 import { reactive, ref, onMounted, onBeforeUnmount } from 'vue'
 import Typed from 'typed.js'
 import api from '../services/api'
+import ResumeModal from './ResumeModal.vue'
 
 const typedText = ref(null)
+const isPreviewOpen = ref(false)
 let typedInstance = null
 
 const profile = reactive({
