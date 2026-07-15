@@ -14,7 +14,9 @@
         <div
           v-for="certificate in certificates"
           :key="certificate.id"
-          class="glass-card rounded-[2rem] overflow-hidden hover:-translate-y-2 transition w-full md:w-[calc(33.333%-1.334rem)]"
+          v-tilt
+          @mousemove="handleMouseMove"
+          class="glass-card premium-card rounded-[2rem] overflow-hidden w-full md:w-[calc(33.333%-1.334rem)]"
         >
           <img
             v-if="certificate.image"
@@ -75,6 +77,17 @@ const openLightbox = (imageUrl) => {
 
 const closeLightbox = () => {
   lightboxImage.value = null
+}
+
+const handleMouseMove = (event) => {
+  const card = event.currentTarget
+  const rect = card.getBoundingClientRect()
+
+  const x = event.clientX - rect.left
+  const y = event.clientY - rect.top
+
+  card.style.setProperty('--x', `${x}px`)
+  card.style.setProperty('--y', `${y}px`)
 }
 
 onMounted(async () => {
