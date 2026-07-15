@@ -459,6 +459,28 @@ app.put('/api/admin/profile', verifyToken, (req, res) => {
   )
 })
 
+app.get('/api/stats', (req, res) => {
+  const sql = `
+  SELECT
+    (SELECT COUNT(*) FROM projects) AS total_projects,
+    (SELECT COUNT(*) FROM contacts) AS total_contacts,
+    (SELECT COUNT(*) FROM experiences) AS total_experiences,
+    (SELECT COUNT(*) FROM certificates) AS total_certificates,
+    (SELECT COUNT(*) FROM skills) AS total_skills
+  `
+
+  db.query(sql, (err, results) => {
+    if (err) {
+      return res.status(500).json({
+        message: 'Failed to fetch stats',
+        error: err
+      })
+    }
+
+    res.json(results[0])
+  })
+})
+
 app.get('/api/admin/stats', verifyToken, (req, res) => {
   const sql = `
   SELECT

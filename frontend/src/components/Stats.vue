@@ -66,7 +66,7 @@ const stats = reactive({
 
 onMounted(async () => {
   try {
-    const response = await api.get('/api/admin/stats')
+    const response = await api.get('/api/stats')
     Object.assign(stats, response.data)
   } catch (err) {
     console.error(err)
