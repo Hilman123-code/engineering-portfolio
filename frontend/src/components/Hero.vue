@@ -29,7 +29,7 @@
           </a>
 
           <a
-            :href="profile.resume_url || '/resume/resume.pdf'"
+            :href="normalizeAssetPath(profile.resume_url, '/resume/resume.pdf')"
             download
             class="glass-card px-7 py-4 rounded-2xl font-semibold hover:bg-white hover:text-slate-900 transition"
           >
@@ -71,7 +71,7 @@
 
     <ResumeModal
       v-model="isPreviewOpen"
-      :resume-url="profile.resume_url || '/resume/resume.pdf'"
+      :resume-url="normalizeAssetPath(profile.resume_url, '/resume/resume.pdf')"
     />
   </section>
 </template>
@@ -80,6 +80,7 @@
 import { reactive, ref, onMounted, onBeforeUnmount } from 'vue'
 import Typed from 'typed.js'
 import api from '../services/api'
+import { normalizeAssetPath } from '../utils/helpers'
 import ResumeModal from './ResumeModal.vue'
 
 const typedText = ref(null)

@@ -18,7 +18,7 @@
 
         <div class="flex flex-wrap justify-center gap-4">
           <a
-            :href="profile.resume_url || '/resume/resume.pdf'"
+            :href="normalizeAssetPath(profile.resume_url, '/resume/resume.pdf')"
             download
             class="magnetic-btn bg-blue-600 px-7 py-4 rounded-2xl font-semibold hover:bg-blue-700 transition"
           >
@@ -55,7 +55,7 @@
 
     <ResumeModal
       v-model="isPreviewOpen"
-      :resume-url="profile.resume_url || '/resume/resume.pdf'"
+      :resume-url="normalizeAssetPath(profile.resume_url, '/resume/resume.pdf')"
     />
   </section>
 </template>
@@ -63,7 +63,7 @@
 <script setup>
 import { reactive, ref, onMounted } from 'vue'
 import api from '../services/api'
-import { normalizeUrl } from '../utils/helpers'
+import { normalizeUrl, normalizeAssetPath } from '../utils/helpers'
 import ResumeModal from './ResumeModal.vue'
 
 const isPreviewOpen = ref(false)
