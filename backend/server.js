@@ -1,4 +1,5 @@
 const path = require('path')
+const fs = require('fs')
 const multer = require('multer')
 const express = require('express')
 const cors = require('cors')
@@ -13,7 +14,16 @@ const app = express()
 app.use(cors())
 app.use(express.json())
 
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')))
+// uploads/ is gitignored, so a fresh Railway deploy won't have this folder
+// on disk yet. Create it automatically at startup so multer never fails
+// with ENOENT when someone uploads an image.
+const uploadsDir = path.join(__dirname, 'uploads')
+
+if (!fs.existsSync(uploadsDir)) {
+  fs.mkdirSync(uploadsDir, { recursive: true })
+}
+
+app.use('/uploads', express.static(uploadsDir))
 
 const db = mysql.createConnection({
   host: process.env.DB_HOST,
@@ -752,7 +762,7 @@ app.delete('/api/admin/skills/:id', verifyToken, (req, res) => {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, 'uploads/')
+    cb(null, uploadsDir)
   },
   filename: (req, file, cb) => {
     const uniqueName = Date.now() + '-' + file.originalname
