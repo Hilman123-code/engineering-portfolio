@@ -12,32 +12,32 @@
 
     <h1 class="text-4xl font-bold mb-8">Manage Skills</h1>
 
-    <div class="bg-white rounded-2xl shadow p-6 mb-8">
+    <div class="bg-white rounded-2xl shadow p-6 mb-8 min-w-0">
       <h2 class="text-2xl font-bold mb-5">
         {{ isEditing ? 'Edit Skill' : 'Add New Skill' }}
       </h2>
 
-      <form @submit.prevent="isEditing ? updateSkill() : addSkill()" class="grid gap-4">
+      <form @submit.prevent="isEditing ? updateSkill() : addSkill()" class="grid gap-4 min-w-0">
         <input
           v-model="form.icon"
           placeholder="Icon example: 💻"
-          class="border rounded-xl px-4 py-3"
+          class="border rounded-xl px-4 py-3 w-full"
         />
 
         <input
           v-model="form.title"
           placeholder="Skill Title"
-          class="border rounded-xl px-4 py-3"
+          class="border rounded-xl px-4 py-3 w-full"
         />
 
         <textarea
           v-model="form.description"
           rows="4"
           placeholder="Description"
-          class="border rounded-xl px-4 py-3"
+          class="border rounded-xl px-4 py-3 w-full"
         ></textarea>
 
-        <div class="flex gap-3">
+        <div class="flex flex-wrap gap-3">
           <button
             type="submit"
             class="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700"
@@ -72,7 +72,8 @@
       Showing {{ filteredSkills.length }} of {{ skills.length }} skills
     </p>
 
-    <div class="bg-white rounded-2xl shadow overflow-x-auto">
+    <!-- Desktop table (md and up) -->
+    <div class="hidden md:block bg-white rounded-2xl shadow overflow-x-auto">
       <table class="w-full text-left">
         <thead class="bg-slate-900 text-white">
           <tr>
@@ -119,6 +120,45 @@
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- Mobile card list (below md) -->
+    <div class="md:hidden grid gap-4">
+      <p
+        v-if="filteredSkills.length === 0"
+        class="bg-white rounded-2xl shadow p-6 text-center text-gray-500"
+      >
+        No skills found.
+      </p>
+
+      <div
+        v-for="skill in filteredSkills"
+        :key="skill.id"
+        class="bg-white rounded-2xl shadow p-4 min-w-0"
+      >
+        <div class="flex gap-3 mb-3 items-center">
+          <span class="text-3xl shrink-0">{{ skill.icon }}</span>
+          <h3 class="font-semibold break-words min-w-0">{{ skill.title }}</h3>
+        </div>
+
+        <p class="text-sm text-gray-700 break-words mb-4">{{ skill.description }}</p>
+
+        <div class="flex gap-2">
+          <button
+            @click="startEdit(skill)"
+            class="flex-1 bg-yellow-500 text-white px-4 py-2 rounded-xl hover:bg-yellow-600"
+          >
+            Edit
+          </button>
+
+          <button
+            @click="openDeleteModal(skill.id)"
+            class="flex-1 bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
     </div>
   </AdminLayout>
 </template>

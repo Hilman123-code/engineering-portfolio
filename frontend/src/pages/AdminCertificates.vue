@@ -12,22 +12,22 @@
 
     <h1 class="text-4xl font-bold mb-8">Manage Certificates</h1>
 
-    <div class="bg-white rounded-2xl shadow p-6 mb-8">
+    <div class="bg-white rounded-2xl shadow p-6 mb-8 min-w-0">
       <h2 class="text-2xl font-bold mb-5">
         {{ isEditing ? 'Edit Certificate' : 'Add New Certificate' }}
       </h2>
 
-      <form @submit.prevent="isEditing ? updateCertificate() : addCertificate()" class="grid gap-4">
-        <input v-model="form.title" placeholder="Certificate Title" class="border rounded-xl px-4 py-3" />
-        <input v-model="form.issuer" placeholder="Issuer" class="border rounded-xl px-4 py-3" />
-        <input v-model="form.year" placeholder="Year" class="border rounded-xl px-4 py-3" />
-        <input v-model="form.image" placeholder="Image URL example: /images/certificate1.jpg" class="border rounded-xl px-4 py-3" />
+      <form @submit.prevent="isEditing ? updateCertificate() : addCertificate()" class="grid gap-4 min-w-0">
+        <input v-model="form.title" placeholder="Certificate Title" class="border rounded-xl px-4 py-3 w-full" />
+        <input v-model="form.issuer" placeholder="Issuer" class="border rounded-xl px-4 py-3 w-full" />
+        <input v-model="form.year" placeholder="Year" class="border rounded-xl px-4 py-3 w-full" />
+        <input v-model="form.image" placeholder="Image URL example: /images/certificate1.jpg" class="border rounded-xl px-4 py-3 w-full" />
         
         <input
           type="file"
           accept="image/*"
           @change="uploadCertificateImage"
-          class="border rounded-xl px-4 py-3"
+          class="border rounded-xl px-4 py-3 w-full"
         />
 
         <div v-if="form.image" class="flex justify-center">
@@ -41,10 +41,10 @@
           v-model="form.description"
           rows="4"
           placeholder="Description"
-          class="border rounded-xl px-4 py-3"
+          class="border rounded-xl px-4 py-3 w-full"
         ></textarea>
 
-        <div class="flex gap-3">
+        <div class="flex flex-wrap gap-3">
           <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700">
             {{ isEditing ? 'Update Certificate' : 'Add Certificate' }}
           </button>
@@ -76,7 +76,8 @@
       Showing {{ filteredCertificates.length }} of {{ certificates.length }} certificates
     </p>
 
-    <div class="bg-white rounded-2xl shadow overflow-x-auto">
+    <!-- Desktop table (md and up) -->
+    <div class="hidden md:block bg-white rounded-2xl shadow overflow-x-auto">
       <table class="w-full text-left">
         <thead class="bg-slate-900 text-white">
           <tr>
@@ -134,6 +135,59 @@
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- Mobile card list (below md) -->
+    <div class="md:hidden grid gap-4">
+      <p
+        v-if="filteredCertificates.length === 0"
+        class="bg-white rounded-2xl shadow p-6 text-center text-gray-500"
+      >
+        No certificates found.
+      </p>
+
+      <div
+        v-for="item in filteredCertificates"
+        :key="item.id"
+        class="bg-white rounded-2xl shadow p-4 min-w-0"
+      >
+        <div class="flex gap-3 mb-3">
+          <img
+            v-if="item.image"
+            :src="item.image"
+            class="w-20 h-14 object-cover rounded-lg shrink-0"
+          />
+          <div
+            v-else
+            class="w-20 h-14 shrink-0 rounded-lg bg-gray-100 flex items-center justify-center text-xs text-gray-400"
+          >
+            No image
+          </div>
+
+          <div class="min-w-0">
+            <h3 class="font-semibold break-words">{{ item.title }}</h3>
+            <p class="text-sm text-gray-500 break-words">{{ item.issuer }} &middot; {{ item.year }}</p>
+          </div>
+        </div>
+
+        <p class="text-sm text-gray-700 break-words mb-4">{{ item.description }}</p>
+
+        <div class="flex gap-2">
+          <button
+            @click="startEdit(item)"
+            class="flex-1 bg-yellow-500 text-white px-4 py-2 rounded-xl hover:bg-yellow-600"
+          >
+            Edit
+          </button>
+
+          <button
+            @click="openDeleteModal(item.id)"
+            class="flex-1 bg-red-600 text-white px-4 py-2 rounded-xl hover:bg-red-700"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
     </div>
   </AdminLayout>
 </template>

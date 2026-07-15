@@ -12,24 +12,24 @@
 
     <h1 class="text-4xl font-bold mb-8">Manage Experiences</h1>
 
-    <div class="bg-white rounded-2xl shadow p-6 mb-8">
+    <div class="bg-white rounded-2xl shadow p-6 mb-8 min-w-0">
       <h2 class="text-2xl font-bold mb-5">
         {{ isEditing ? 'Edit Experience' : 'Add New Experience' }}
       </h2>
 
-      <form @submit.prevent="isEditing ? updateExperience() : addExperience()" class="grid gap-4">
-        <input v-model="form.title" placeholder="Title" class="border rounded-xl px-4 py-3" />
-        <input v-model="form.company" placeholder="Company / Organization" class="border rounded-xl px-4 py-3" />
-        <input v-model="form.year" placeholder="Year example: 2026" class="border rounded-xl px-4 py-3" />
+      <form @submit.prevent="isEditing ? updateExperience() : addExperience()" class="grid gap-4 min-w-0">
+        <input v-model="form.title" placeholder="Title" class="border rounded-xl px-4 py-3 w-full" />
+        <input v-model="form.company" placeholder="Company / Organization" class="border rounded-xl px-4 py-3 w-full" />
+        <input v-model="form.year" placeholder="Year example: 2026" class="border rounded-xl px-4 py-3 w-full" />
 
         <textarea
           v-model="form.description"
           rows="4"
           placeholder="Description"
-          class="border rounded-xl px-4 py-3"
+          class="border rounded-xl px-4 py-3 w-full"
         ></textarea>
 
-        <div class="flex gap-3">
+        <div class="flex flex-wrap gap-3">
           <button type="submit" class="bg-blue-600 text-white px-6 py-3 rounded-xl hover:bg-blue-700">
             {{ isEditing ? 'Update Experience' : 'Add Experience' }}
           </button>
@@ -61,7 +61,8 @@
       Showing {{ filteredExperiences.length }} of {{ experiences.length }} experiences
     </p>
 
-    <div class="bg-white rounded-2xl shadow overflow-x-auto">
+    <!-- Desktop table (md and up) -->
+    <div class="hidden md:block bg-white rounded-2xl shadow overflow-x-auto">
       <table class="w-full text-left">
         <thead class="bg-slate-900 text-white">
           <tr>
@@ -100,6 +101,46 @@
           </tr>
         </tbody>
       </table>
+    </div>
+
+    <!-- Mobile card list (below md) -->
+    <div class="md:hidden grid gap-4">
+      <p
+        v-if="filteredExperiences.length === 0"
+        class="bg-white rounded-2xl shadow p-6 text-center text-gray-500"
+      >
+        No experiences found.
+      </p>
+
+      <div
+        v-for="item in filteredExperiences"
+        :key="item.id"
+        class="bg-white rounded-2xl shadow p-4 min-w-0"
+      >
+        <div class="flex justify-between items-start gap-3 mb-1">
+          <h3 class="font-semibold break-words min-w-0">{{ item.title }}</h3>
+          <span class="text-xs text-gray-400 shrink-0">{{ item.year }}</span>
+        </div>
+
+        <p class="text-sm text-gray-500 break-words mb-3">{{ item.company }}</p>
+        <p class="text-sm text-gray-700 break-words mb-4">{{ item.description }}</p>
+
+        <div class="flex gap-2">
+          <button
+            @click="startEdit(item)"
+            class="flex-1 bg-yellow-500 text-white px-4 py-2 rounded-xl"
+          >
+            Edit
+          </button>
+
+          <button
+            @click="openDeleteModal(item.id)"
+            class="flex-1 bg-red-600 text-white px-4 py-2 rounded-xl"
+          >
+            Delete
+          </button>
+        </div>
+      </div>
     </div>
   </AdminLayout>
 </template>
