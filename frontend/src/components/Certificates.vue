@@ -10,17 +10,18 @@
         </h2>
       </div>
 
-      <div class="grid md:grid-cols-3 gap-8">
+      <div class="flex flex-wrap justify-center gap-8">
         <div
           v-for="certificate in certificates"
           :key="certificate.id"
-          class="glass-card rounded-[2rem] overflow-hidden hover:-translate-y-2 transition"
+          class="glass-card rounded-[2rem] overflow-hidden hover:-translate-y-2 transition w-full md:w-[calc(33.333%-1.334rem)]"
         >
           <img
             v-if="certificate.image"
             :src="certificate.image"
             :alt="certificate.title"
-            class="w-full h-48 object-cover"
+            @click="openLightbox(certificate.image)"
+            class="w-full h-48 object-cover cursor-pointer hover:opacity-80 transition"
           />
 
           <div class="p-7">
@@ -47,6 +48,17 @@
         No certificates added yet.
       </p>
     </div>
+
+    <div
+      v-if="lightboxImage"
+      @click="closeLightbox"
+      class="fixed inset-0 bg-black/80 z-[9999] flex items-center justify-center p-6"
+    >
+      <img
+        :src="lightboxImage"
+        class="max-w-5xl max-h-[85vh] object-contain rounded-2xl"
+      />
+    </div>
   </section>
 </template>
 
@@ -55,6 +67,15 @@ import { ref, onMounted } from 'vue'
 import api from '../services/api'
 
 const certificates = ref([])
+const lightboxImage = ref(null)
+
+const openLightbox = (imageUrl) => {
+  lightboxImage.value = imageUrl
+}
+
+const closeLightbox = () => {
+  lightboxImage.value = null
+}
 
 onMounted(async () => {
   const response = await api.get('/api/certificates')

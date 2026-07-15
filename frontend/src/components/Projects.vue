@@ -15,19 +15,20 @@
         </p>
       </div>
 
-      <div class="grid md:grid-cols-3 gap-8">
+      <div class="flex flex-wrap justify-center gap-8">
         <div
           v-for="project in projects"
           :key="project.id"
           v-tilt
           @mousemove="handleMouseMove"
-          class="glass-card premium-card rounded-[2rem] overflow-hidden"
+          class="glass-card premium-card rounded-[2rem] overflow-hidden w-full md:w-[calc(33.333%-1.334rem)]"
         >
           <img
             v-if="project.image"
             :src="project.image"
             :alt="project.title"
-            class="w-full h-56 object-cover"
+            @click="openLightbox(project.image)"
+            class="w-full h-56 object-cover cursor-pointer hover:opacity-80 transition"
           />
 
           <div
@@ -109,6 +110,17 @@
         No projects added yet.
       </p>
     </div>
+
+    <div
+      v-if="lightboxImage"
+      @click="closeLightbox"
+      class="fixed inset-0 bg-black/80 z-[9999] flex items-center justify-center p-6"
+    >
+      <img
+        :src="lightboxImage"
+        class="max-w-5xl max-h-[85vh] object-contain rounded-2xl"
+      />
+    </div>
   </section>
 </template>
 
@@ -119,6 +131,15 @@ import api from '../services/api'
 
 const router = useRouter()
 const projects = ref([])
+const lightboxImage = ref(null)
+
+const openLightbox = (imageUrl) => {
+  lightboxImage.value = imageUrl
+}
+
+const closeLightbox = () => {
+  lightboxImage.value = null
+}
 
 const goToProject = (id) => {
   router.push(`/projects/${id}`)
