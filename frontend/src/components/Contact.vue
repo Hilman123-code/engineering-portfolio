@@ -42,9 +42,10 @@
 
           <button
             type="submit"
-            class="bg-blue-600 text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition"
+            :disabled="loading"
+            class="bg-blue-600 text-white py-4 rounded-xl font-semibold hover:bg-blue-700 transition disabled:opacity-60 disabled:cursor-not-allowed"
           >
-            Send Message
+            {{ loading ? 'Sending...' : 'Send Message' }}
           </button>
 
           <div v-if="success" class="bg-green-600/20 text-green-300 p-4 rounded-xl">
@@ -72,6 +73,7 @@ const form = reactive({
 
 const success = ref(false)
 const error = ref(false)
+const loading = ref(false)
 
 const sendMessage = async () => {
   success.value = false
@@ -81,6 +83,8 @@ const sendMessage = async () => {
     error.value = true
     return
   }
+
+  loading.value = true
 
   try {
     await api.post('/api/contact', {
@@ -97,6 +101,8 @@ const sendMessage = async () => {
   } catch (err) {
     console.error(err)
     error.value = true
+  } finally {
+    loading.value = false
   }
 }
 </script>
