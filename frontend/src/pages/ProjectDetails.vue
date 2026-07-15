@@ -168,7 +168,7 @@
         class="max-w-5xl max-h-[85vh] object-contain rounded-2xl"
       />
     </div>
-  </section>
+  </section>  
 </template>
 
 <script setup>

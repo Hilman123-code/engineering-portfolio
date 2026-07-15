@@ -876,6 +876,7 @@ app.post('/api/contact', (req, res) => {
       await transporter.sendMail({
         from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
         to: process.env.EMAIL_TO,
+        replyTo: email,
         subject: `New Portfolio Message from ${name}`,
         html: `
           <h2>New Contact Message</h2>
