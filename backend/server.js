@@ -5,7 +5,7 @@ const cors = require('cors')
 const mysql = require('mysql2')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const nodemailer = require('nodemailer')
+const { Resend } = require('resend')
 require('dotenv').config()
 
 const app = express()
@@ -31,16 +31,7 @@ db.connect((err) => {
   console.log('Connected to MySQL database')
 })
 
-const transporter = nodemailer.createTransport({
-  host: process.env.EMAIL_HOST,
-  port: Number(process.env.EMAIL_PORT),
-  secure: Number(process.env.EMAIL_PORT) === 465,
-  family: 4,
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
-})
+const resend = new Resend(process.env.RESEND_API_KEY)
 
 // ===== AUTH MIDDLEWARE =====
 // Checks for a valid JWT in the Authorization header before allowing
@@ -874,10 +865,10 @@ app.post('/api/contact', (req, res) => {
     }
 
     try {
-      await transporter.sendMail({
-        from: `"Portfolio Contact" <${process.env.EMAIL_USER}>`,
+      const { error: resendError } = await resend.emails.send({
+        from: 'Portfolio Contact <onboarding@resend.dev>',
         to: process.env.EMAIL_TO,
-        replyTo: email,
+        reply_to: email,
         subject: `New Portfolio Message from ${name}`,
         html: `
           <h2>New Contact Message</h2>
@@ -887,6 +878,10 @@ app.post('/api/contact', (req, res) => {
           <p>${message}</p>
         `
       })
+
+      if (resendError) {
+        throw resendError
+      }
 
       res.json({
         message: 'Message saved and email sent successfully'
