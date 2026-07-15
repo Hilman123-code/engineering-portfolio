@@ -36,7 +36,7 @@
 
           <a
             v-if="profile.email"
-            :href="`mailto:${profile.email}`"
+            href="#contact"
             class="glass-card px-7 py-4 rounded-2xl font-semibold hover:bg-white hover:text-slate-900 transition"
           >
             Email Me
