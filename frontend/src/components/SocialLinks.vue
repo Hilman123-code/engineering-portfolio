@@ -27,7 +27,7 @@
 
         <a
           v-if="profile.email"
-          :href="`mailto:${profile.email}`"
+          href="#contact"
           class="glass-card px-6 py-3 rounded-xl hover:bg-blue-600 transition"
         >
           Email Me

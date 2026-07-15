@@ -35,6 +35,7 @@
 
   <div class="reveal">
     <Certificates />
+    <SectionDivider />
   </div>
 
   <div class="reveal">
