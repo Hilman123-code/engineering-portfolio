@@ -50,6 +50,7 @@
           <span class="glass-card px-4 py-2 rounded-full">Node.js</span>
           <span class="glass-card px-4 py-2 rounded-full">Express</span>
           <span class="glass-card px-4 py-2 rounded-full">MySQL</span>
+          <span class="glass-card px-4 py-2 rounded-full">PostgreSQL</span>
         </div>
       </div>
 
