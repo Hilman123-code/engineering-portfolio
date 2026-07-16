@@ -47,8 +47,6 @@ const password = ref('')
 const error = ref(false)
 
 const login = async () => {
-  console.log('LOGIN BUTTON CLICKED')
-
   error.value = false
 
   try {
@@ -57,13 +55,10 @@ const login = async () => {
       password: password.value
     })
 
-    console.log(response.data)
-
     localStorage.setItem('adminToken', response.data.token)
 
     router.push('/admin/dashboard')
   } catch (err) {
-    console.log(err)
     error.value = true
   }
 }
